@@ -1,12 +1,11 @@
-# Mandelbrot Set
+# Mandelbrot Set Coloring Test
 # Kevin Xie CS550 
 
 from PIL import Image
 import math
 
 imgx,imgy=2000,2000 # IMAGE DIMENSIONSd
-tmax=120 # MAXIMUM ITERATIONS
-R,G,B=255,255,255
+tmax=35 # MAXIMUM ITERATIONS
 
 image = Image.new("RGB",(imgx,imgy)) # CREATES IMAGE ACCORDING TO DIMENSIONS
 
@@ -21,6 +20,11 @@ for x in range(imgx):
 				break
 			elif t==tmax: # IF MAX. ITERATIONS REACHED AND Z HAS NOT ESCAPED
 				break
-		image.putpixel((x,y),((R//tmax)*t,(G//tmax)*t,(B//tmax)*t)) # GLOWY MANDELBROT EFFECT
+		if t<=tmax//4: # COLORING
+			image.putpixel((x,y),((255//tmax)*(t+tmax//2),(194//tmax)*(t+tmax//2),(0//tmax)*(t+tmax//2))) 
+		elif t<=tmax//2:
+			image.putpixel((x,y),((253//tmax)*(t+tmax//4),(95//tmax)*(t+tmax//4),(0//tmax)*(t+tmax//4))) 
+		else:
+			image.putpixel((x,y),((255//tmax)*t,(10//tmax)*t,(255//tmax)*t))
 
-image.save("mandelbrot.png") # SAVES IMAGE
+image.save("mandelbrottest.png") # SAVES IMAGE
