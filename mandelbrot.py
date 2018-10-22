@@ -2,25 +2,25 @@
 # Kevin Xie CS550 
 
 from PIL import Image
-import math
 
-imgx,imgy=2000,2000 # IMAGE DIMENSIONSd
-tmax=120 # MAXIMUM ITERATIONS
-R,G,B=255,255,255
+imgx,imgy=512,512 # IMAGE DIMENSIONS
+tmax=256 # MAXIMUM ITERATIONS
+xa,xb=-0.7499824459876544,-0.7495954089506173
+ya,yb=0.02517525077160492,0.025562287808641955
 
 image = Image.new("RGB",(imgx,imgy)) # CREATES IMAGE ACCORDING TO DIMENSIONS
 
 for x in range(imgx): 
+	cx=(x*(xb-xa)/(imgx-1)+xa)
 	for y in range(imgy): # CYCLE THROUGH EACH PIXEL
-		t, zi, zx = 0, 0, 0 # RESETS VARIABLS (Zn and ITERATION NUM.)
-		while True:
-			zx,zi=float((zx*zx-zi*zi)+(x-imgx/2)/(imgx/4)),float((zi*zx+zx*zi)+(y-imgy/2)/(imgy/4)) # CALCULATES Zn+1 acc. PDF
-			absz=float(math.sqrt((zx**2)+(zi**2))) # CALCULATES abs(Zn+1) acc. PDF
-			t+=1 # COUNTS ITERATIONS (NUM OF TRIES)
+		cy=(y*(yb-ya)/(imgy-1)+ya)
+		zi, zx = 0, 0 # RESETS VARIABLS (Zn and ITERATION NUM.)
+		for t in range(tmax):
+			absz=float(((zx**2)+(zi**2))**0.5) # CALCULATES abs(Zn+1) acc. PDF
 			if absz>=2.0: # IF abs(Zn+1)>=2, THEN Z HAS ESCAPED
 				break
-			elif t==tmax: # IF MAX. ITERATIONS REACHED AND Z HAS NOT ESCAPED
-				break
-		image.putpixel((x,y),((R//tmax)*t,(G//tmax)*t,(B//tmax)*t)) # GLOWY MANDELBROT EFFECT
+			zx,zi=float((zx*zx-zi*zi)+cx),float((zi*zx+zx*zi)+cy) # CALCULATES Zn+1 acc. PDF
+		R,G,B=(t*24)%256,(t*35)%256,t
+		image.putpixel((x,y),(R,G,B)) # GLOWY MANDELBROT EFFECT
 
 image.save("mandelbrot.png") # SAVES IMAGE

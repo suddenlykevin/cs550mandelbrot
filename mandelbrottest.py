@@ -2,7 +2,6 @@
 # Kevin Xie CS550 
 
 from PIL import Image
-import math
 
 imgx,imgy=2000,2000 # IMAGE DIMENSIONSd
 tmax=35 # MAXIMUM ITERATIONS
@@ -14,7 +13,7 @@ for x in range(imgx):
 		t, zi, zx = 0, 0, 0 # RESETS VARIABLS (Zn and ITERATION NUM.)
 		while True:
 			zx,zi=float((zx*zx-zi*zi)+(x-imgx/2)/(imgx/4)),float((zi*zx+zx*zi)+(y-imgy/2)/(imgy/4)) # CALCULATES Zn+1 acc. PDF
-			absz=float(math.sqrt((zx**2)+(zi**2))) # CALCULATES abs(Zn+1) acc. PDF
+			absz=float(((zx**2)+(zi**2))**0.5) # CALCULATES abs(Zn+1) acc. PDF
 			t+=1 # COUNTS ITERATIONS (NUM OF TRIES)
 			if absz>=2.0: # IF abs(Zn+1)>=2, THEN Z HAS ESCAPED
 				break
