@@ -9,13 +9,13 @@
 # pixel. This creates a cool "spiritual" visualization of the Mandelbrot. 
 # (https://en.wikipedia.org/wiki/Buddhabrot) I was not able to accurately replicate
 # the formula fully, and I accidentally created the anti-buddhabrot at one point. 
-# (you can find the anti-buddhabrot in buddhabrot.py) Still pretty. I
+# (you can find the anti-buddhabrot in experimentation) Still pretty. I
 # may actually do a little bit more work on the side to see if I can get an accurate buddhabrot.
 # As of now, it looks like an alien cell in outer-space. Finally, the last visualization 
 # is a Julia Set that I thought looked cool.  The Julia set uses the same formula as
 # the Mandelbrot, but instead of varying C, varies Zinitial.
 # (admittedly, I spent the most time tinkering with Buddhabrots)
-# Estimated time for 1024x1024: 14-25min
+# Estimated time for 1024x1024: 14-15min (buddhabrot is really complex)
 #
 # Sources:
 # Mandelbrot Preview: https://www.atopon.org/mandel/#
@@ -47,7 +47,6 @@ countsB=[[0]*imgy for x in range(imgx)]
 # Creates "base" images
 tame = Image.new("RGB",(imgx,imgy))
 buddha = Image.new("RGB",(imgx,imgy))
-antibuddha = Image.new("RGB",(imgx,imgy))
 julia = Image.new("RGB",(imgx,imgy))
 
 # for loops to cycle through each pixel
@@ -112,9 +111,8 @@ for x in range(imgx):
 						countsB[yf][xf] += 1
 			zx,zi=float((zx*zx-zi*zi)+cx2),float((zi*zx+zx*zi)+cy2)
 
-# sets initial minimal and maximum values
+# sets initial minimal and maximum values for BUDDHA/ANTIBUDDHA
 minv,maxv=countsR[0][0],countsR[0][0]
-mina,maxa=countsR[0][0],countsR[0][0] # (for anti-buddhabrot)
 
 # goes through the 2D list looking for lower minimums or higher maxes (these maximum and minimums are used as the relative RGB range)
 for x in range(imgx):
@@ -122,13 +120,8 @@ for x in range(imgx):
 		if countsR[y][x]<minv:
 			minv = countsR[y][x]
 		if countsR[y][x]>maxv:
-			if countsR[y][x]<=bmax*10:
+			if countsR[y][x]<=bmax*10: # just to limit the range of color so the lower values are more visible
 				maxv = countsR[y][x]
-		if countsR[y][x]<mina:
-			mina = countsR[y][x]
-		if countsR[y][x]>maxa:
-			if countsR[y][x]<=bmax/10:
-				maxa = countsR[y][x]
 
 # BUDDHABROT and ANTIBUDDHABROT pixel placement, calculates relative "color strength" based on frequency of being in escape path
 for x in range(imgx):
@@ -136,11 +129,7 @@ for x in range(imgx):
 		R=int(((countsR[y][x]-minv)/(maxv-minv))*255)*2
 		G=int((((countsG[y][x]-minv)/(maxv-minv))*255)/2) # arbitrary constants for cosmetic changes
 		B=int((((countsB[y][x]-minv)/(maxv-minv))*255)*bmax/100)
-		Ra=int(((countsR[y][x]-mina)/(maxa-mina))*255)*2
-		Ga=int((((countsG[y][x]-mina)/(maxa-mina))*255)/2) 
-		Ba=int((((countsB[y][x]-mina)/(maxa-mina))*255)*5)
 		buddha.putpixel((x,imgy-1-y),(R,G,B))
-		antibuddha.putpixel((x,imgy-1-y),(Ra,Ga,Ba))
 
 # JULIA set starting, constant C
 cx,cy=-.79,.15
@@ -161,5 +150,4 @@ for x in range(imgx):
 # saves images
 tame.save("tamelbrotimpactal.png") 
 buddha.rotate(270).save("buddha.png") # rotate 270 degrees because it looks cooler :)
-antibuddha.rotate(270).save("antibuddha.png")
 julia.save("julia.png")

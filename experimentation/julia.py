@@ -24,7 +24,7 @@ for x in range(imgx):
 				break
 			zx,zi=float((zx*zx-zi*zi)+cx),float((zi*zx+zx*zi)+cy)
 		# cycles through HSV starting from yellow
-		R,G,B = int(colorsys.hsv_to_rgb((0.297222-(t/tmax))%1,1,1)[0]*255), int(colorsys.hsv_to_rgb((0.297222-(t/tmax))%1,1,1)[1]*255), int(colorsys.hsv_to_rgb((0.297222-(t/tmax))%1,1,1)[2]*255)
+		R,G,B = int(colorsys.hsv_to_rgb((0.297222-(t/tmax))%1,1,1.36)[0]*255), int(colorsys.hsv_to_rgb((0.297222-(t/tmax))%1,1,1.36)[1]*255), int(colorsys.hsv_to_rgb((0.297222-(t/tmax))%1,1,1.36)[2]*255)
 		image.putpixel((x,imgy-1-y),(R,G,B))
 
 image.save("julia.png")
