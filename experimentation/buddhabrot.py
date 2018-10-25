@@ -3,7 +3,7 @@ import colorsys
 import random
 
 # Image specs (Dimensions, Iterations, Coordinate Range)
-imgx,imgy=512,512
+imgx,imgy=1024,1024
 tmax=1000
 xa,xb=-2.0,0.5
 ya,yb=-1.25,1.25
@@ -16,8 +16,9 @@ countsB=[[0]*imgy for x in range(imgx)]
 image = Image.new("RGB",(imgx,imgy))
 
 for x in range(imgx):
+	cx=(x*(xb-xa)/(imgx-1)+xa)
 	for y in range (imgy):
-		cx,cy=(x*(xb-xa)/(imgx-1)+xa),(y*(yb-ya)/(imgy-1)+ya)
+		cy=(y*(yb-ya)/(imgy-1)+ya)
 		zx,zi=0,0
 		sequence=[]
 		for t in range(tmax):
@@ -63,4 +64,4 @@ for x in range(imgx):
 
 # ImageEnhance.Contrast(image).enhance(10)
 
-image.save("buddha.png")
+image.rotate(270).save("antibuddha.png")
